@@ -51,3 +51,10 @@ Use the package manager [pip](https://pip.pypa.io/en/stable/) to install the nec
    ```
 
 ---
+
+### Results
+- **Image Generation**: Generates high-quality images based on user text prompts, displayed in the app.
+- **Image Quality**: Produces detailed and contextually relevant visuals.
+- **User Experience**: Provides a straightforward GUI for easy image generation and saving.
+
+---
