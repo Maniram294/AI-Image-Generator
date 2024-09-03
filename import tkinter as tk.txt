@@ -1,0 +1,44 @@
+import tkinter as tk
+import customtkinter as ctk
+from PIL import Image, ImageTk
+from diffusers import StableDiffusionPipeline
+
+import torch
+
+app = tk.Tk()
+app.geometry("200x200")
+app.title("AI Image")
+ctk.set_appearance_mode("dark")
+
+prompt = ctk.CTkEntry(height=35, width=200, text_color="black", fg_color="white", master=app)
+prompt.place(x=10, y=10)
+
+lmain = ctk.CTkLabel(height=150, width=150, master=app)
+lmain.place(x=10, y=110)
+
+modelId = "CompVis/stable-diffusion-v1-4"
+device = "cpu"
+
+pipe = StableDiffusionPipeline.from_pretrained(modelId)
+pipe.to(device)
+
+
+def generate():
+    try:
+        # Generate the image on CPU
+        image = pipe(prompt.get(), guidance_scale=8.5)["sample"][0]
+        image = Image.fromarray(image.numpy())
+        image.save('generatedImage.png')
+        img = ImageTk.PhotoImage(image)
+
+        lmain.configure(image=img)
+        lmain.image = img  # Keep a reference to prevent garbage collection
+    except Exception as e:
+        print(f"Error generating image: {e}")
+
+
+trigger = ctk.CTkButton(height=40, width=120, text_color="white", fg_color="blue", master=app, command=generate)
+trigger.configure(text="Generate Image")
+trigger.place(x=100, y=30)
+
+app.mainloop()
